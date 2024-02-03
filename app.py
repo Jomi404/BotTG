@@ -63,21 +63,15 @@ async def edit_mode(message: types.Message):
 
 @dp.message(F.text.lower() == see_post.lower())
 async def upload_photo_post(message: Message):
-    # Сюда будем помещать file_id отправленных файлов, чтобы потом ими воспользоваться
-    file_ids = []
+    buttons = [
+        [types.InlineKeyboardButton(text="Panda", url='https://www.youtube.com/watch?v=hAOoMtRstJ8', callback_data="default_panda")]
+    ]
+    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
 
-    image_from_pc = FSInputFile("./resources/default.jpg")
-    result = await message.answer_photo(
-        image_from_pc,
-        # caption="Изображение из файла на компьютере"
-    )
-    file_ids.append(result.photo[-1].file_id)
+    photo = types.FSInputFile('./resources/default.jpg')
+    await message.answer(text='Ваш пост выглядит так:')
+    await bot.send_photo(message.chat.id, photo, reply_markup=keyboard)
 
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text='test', url='https://www.youtube.com/')]
-    ])
-
-    await message.answer('Test', reply_markup=keyboard)
 
 
 async def main():
